@@ -13,7 +13,7 @@ var time = 99;
 var points = 0;
 var bestPoints = 0;
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
-const version = '1.0';
+const version = '1.2';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
