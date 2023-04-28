@@ -14,6 +14,7 @@ html
 {
     width: 100%;
     height: 100vh;
+    overflow: hidden;
 }
 
 .cursorGreen
@@ -41,6 +42,7 @@ body
 .bestPoints,
 .copyRight,
 .version,
+.screen,
 .help
 {
     font-family: 'Press Start 2P';
@@ -78,6 +80,12 @@ body
 {
     bottom: 64px;
     left: 32px;
+}
+
+.screen
+{
+    bottom: 64px;
+    right: 32px;
 }
 
 .help

@@ -24,11 +24,17 @@ background_game.src = 'img/background_game.png';
 const playButton = new Image();
 playButton.src = 'img/playButton.png';
 
+const stopButton = new Image();
+stopButton.src = 'img/stopButton.png';
+
 const repeatButton = new Image();
 repeatButton.src = 'img/repeatButton.png';
 
-const backButton = new Image();
-backButton.src = 'img/backButton.png';
+const continueButton = new Image();
+continueButton.src = 'img/continueButton.png';
+
+const backButton_end = new Image();
+backButton_end.src = 'img/backButton_end.png';
 
 const countBlocksY = 2;
 const countBlocksX = 9;
@@ -55,6 +61,28 @@ var MainBlock = {
     height: 128,
     color: arrBlocks[Math.floor(Math.random() * countBlocksY) + 1][Math.floor(Math.random() * countBlocksX) + 1].color,
 }
+
+/*function drawBackground(bg_color, color) {
+    canvasContext.fillStyle = bg_color;
+    canvasContext.fillRect(0, 0, GAME.width, GAME.height);
+    canvasContext.fillStyle = color;
+    for (var n = 0; n < 16; n++) {
+        canvasContext.fillRect(n * 64, 0, 32, 32);
+    }
+    for (var n = 0; n < 16; n++) {
+        canvasContext.fillRect(n * 64 + 32, 480, 32, 32);
+    }
+    for (var n = 0; n < 8; n++) {
+        canvasContext.fillRect(0, n * 64, 32, 32);
+    }
+    for (var n = 0; n < 8; n++) {
+        canvasContext.fillRect(992, n * 64 + 32, 32, 32);
+    }
+    canvasContext.fillRect(32, 32, 960, 8);
+    canvasContext.fillRect(32, 472, 960, 8);
+    canvasContext.fillRect(32, 32, 8, 448);
+    canvasContext.fillRect(984, 32, 8, 448);
+}*/
 
 function drawBlocks() {
     for (var y1 = 1; y1 <= countBlocksY; y1++) {
@@ -88,15 +116,28 @@ function updateMainBlock() {
 
 function endScreen() {
     screen = 'end';
+    /*drawBackground("#ff8000", "#804000");*/
+    document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_game, -32, -32);
     canvasContext.drawImage(repeatButton, 320, 208);
-    canvasContext.drawImage(backButton, 64, 64);
+    canvasContext.drawImage(backButton_end, 64, 64);
 }
 
-function gameScreen() {
+function stopScreen() {
+    screen = 'stop';
+    /*drawBackground("#8000ff", "#400080");*/
+    document.getElementById('canvas').classList.remove('cursorBlue');
+    document.getElementById('canvas').classList.add('cursorGreen');
+    document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
+    canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
+    canvasContext.drawImage(background_start, -32, -32);
+    canvasContext.drawImage(continueButton, 320, 208);
+}
+
+function gameScreen(timeNew) {
     screen = 'game';
-    time = 99;
+    time = timeNew;
     points = 0;
     document.getElementById('points').innerHTML = 'Очков: ' + points;
     document.getElementById('time').style.color = '#fff';
@@ -104,8 +145,11 @@ function gameScreen() {
     document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
     document.getElementById('canvas').classList.remove('cursorGreen');
     document.getElementById('canvas').classList.add('cursorBlue');
+    document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
+    /*drawBackground("#ff8000", "#804000");*/
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_game, -32, -32);
+    canvasContext.drawImage(stopButton, 64, 64);
     drawBlocks();
     drawMainBlock();
 }
@@ -121,6 +165,8 @@ function startScreen() {
     document.getElementById('canvas').classList.remove('cursorBlue');
     document.getElementById('canvas').classList.add('cursorGreen');
     document.getElementById('version').innerHTML = 'Версия: ' + version;
+    document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
+    /*drawBackground("#8000ff", "#400080");*/
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_start, -32, -32);
     canvasContext.drawImage(playButton, 320, 208);
@@ -167,11 +213,21 @@ function onCanvansMouseDown(event) {
                 }
             }
         }
+        
+        if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
+            stopScreen();
+        }
+    }
+
+    if (screen === 'stop') {
+        if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
+            gameScreen(time);
+        }
     }
     
     if (screen === 'end') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            gameScreen();
+            gameScreen(99);
         }
         
         if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
@@ -181,7 +237,7 @@ function onCanvansMouseDown(event) {
 
     if (screen === 'start') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            gameScreen();
+            gameScreen(99);
         }
     }
 }
@@ -205,7 +261,7 @@ function getCoords(e, canvas) {
     return { x: mx, y: my };
 }
 
-backButton.onload = () => {
+backButton_end.onload = () => {
     startScreen();
     initEventsListeners();
     setInterval(countDown, 100);
