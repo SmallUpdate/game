@@ -43,7 +43,8 @@ body
 .copyRight,
 .version,
 .screen,
-.help
+.help,
+.helpText
 {
     font-family: 'Press Start 2P';
     color: #fff;
@@ -100,4 +101,27 @@ body
 {
     color: #ff8080;
     box-shadow: 0 2px 0 0 #ff8080;
+}
+
+.helpText
+{
+    width: 80%;
+    height: 80vh;
+    padding: 32px;
+    border: 8px #fff solid;
+    background-color: #000000b0;
+    visibility: hidden;
+    line-height: 32px;
+    z-index: 99;
+    overflow: scroll;
+}
+
+.visible
+{
+    visibility: visible;
+}
+
+span
+{
+    color: rgb(255, 156, 156);
 }

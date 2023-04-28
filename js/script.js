@@ -267,6 +267,10 @@ backButton_end.onload = () => {
     setInterval(countDown, 100);
 }
 
+document.getElementById('help').addEventListener('click', function () {
+    document.getElementById('helpText').classList.toggle('visible');
+})
+
 function setPoints(ptns) {
     points = ptns;
     document.getElementById('points').innerHTML = 'Очков: ' + points;
