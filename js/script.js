@@ -13,6 +13,7 @@ var time = 99;
 var points = 0;
 var bestPoints = 0;
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
+const version = '1.0';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -28,16 +29,6 @@ repeatButton.src = 'img/repeatButton.png';
 
 const backButton = new Image();
 backButton.src = 'img/backButton.png';
-/*
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 3; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-      color += 0;
-    }
-    return color;
-}*/
 
 const countBlocksY = 2;
 const countBlocksX = 9;
@@ -62,7 +53,7 @@ var MainBlock = {
     posY: 96,
     width: 128,
     height: 128,
-    color: colors[Math.floor(Math.random() * 15) + 1],
+    color: arrBlocks[Math.floor(Math.random() * countBlocksY) + 1][Math.floor(Math.random() * countBlocksX) + 1].color,
 }
 
 function drawBlocks() {
@@ -90,12 +81,12 @@ function drawMainBlock() {
 }
 
 function updateMainBlock() {
-    MainBlock.color = arrBlocks[Math.floor(Math.random() * (countBlocksY - 1)) + 1][Math.floor(Math.random() * (countBlocksX - 1)) + 1].color;
+    MainBlock.color = arrBlocks[Math.floor(Math.random() * countBlocksY) + 1][Math.floor(Math.random() * countBlocksX) + 1].color;
     canvasContext.fillStyle = MainBlock.color;
     canvasContext.fillRect(MainBlock.posX, MainBlock.posY, MainBlock.width, MainBlock.height);
 }
 
-function end() {
+function endScreen() {
     screen = 'end';
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_game, -32, -32);
@@ -103,12 +94,14 @@ function end() {
     canvasContext.drawImage(backButton, 64, 64);
 }
 
-function game() {
+function gameScreen() {
     screen = 'game';
     time = 99;
     points = 0;
     document.getElementById('points').innerHTML = 'Очков: ' + points;
     document.getElementById('time').style.color = '#fff';
+    document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
+    document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
     document.getElementById('canvas').classList.remove('cursorGreen');
     document.getElementById('canvas').classList.add('cursorBlue');
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
@@ -124,8 +117,10 @@ function startScreen() {
     document.getElementById('points').innerHTML = 'Очков: ' + points;
     document.getElementById('time').style.color = '#fff';
     document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
+    document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
     document.getElementById('canvas').classList.remove('cursorBlue');
     document.getElementById('canvas').classList.add('cursorGreen');
+    document.getElementById('version').innerHTML = 'Версия: ' + version;
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_start, -32, -32);
     canvasContext.drawImage(playButton, 320, 208);
@@ -176,7 +171,7 @@ function onCanvansMouseDown(event) {
     
     if (screen === 'end') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            game();
+            gameScreen();
         }
         
         if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
@@ -186,7 +181,7 @@ function onCanvansMouseDown(event) {
 
     if (screen === 'start') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            game();
+            gameScreen();
         }
     }
 }
@@ -198,7 +193,7 @@ function countDown() {
             document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
             document.getElementById('time').style.color = 'rgb(255, ' + (time + 156) + ', ' + (time + 156) + ')';
         } else {
-            end();
+            endScreen();
         }
     }
 }
