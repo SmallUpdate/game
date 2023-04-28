@@ -12,6 +12,7 @@ var screen;
 var time = 99;
 var points = 0;
 var bestPoints = 0;
+var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -27,7 +28,7 @@ repeatButton.src = 'img/repeatButton.png';
 
 const backButton = new Image();
 backButton.src = 'img/backButton.png';
-
+/*
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -36,10 +37,10 @@ function getRandomColor() {
       color += 0;
     }
     return color;
-}
-    
-var countBlocksY = 2;
-var countBlocksX = 9;
+}*/
+
+const countBlocksY = 2;
+const countBlocksX = 9;
 
 var arrBlocks = [];
 
@@ -51,7 +52,7 @@ for (var y1 = 1; y1 <= countBlocksY; y1++) {
             posY: y1 * 96 + 160,
             width: 64,
             height: 64,
-            color: getRandomColor(),
+            color: colors[Math.floor(Math.random() * 15) + 1],
         }
     }
 }
@@ -61,7 +62,7 @@ var MainBlock = {
     posY: 96,
     width: 128,
     height: 128,
-    color: arrBlocks[Math.floor(Math.random() * countBlocksY )+ 1][Math.floor(Math.random() * countBlocksX) + 1].color,
+    color: colors[Math.floor(Math.random() * 15) + 1],
 }
 
 function drawBlocks() {
@@ -76,7 +77,7 @@ function drawBlocks() {
 function updateBlocks() {
     for (var y1 = 1; y1 <= countBlocksY; y1++) {
         for (var x1 = 1; x1 <= countBlocksX; x1++) {
-            arrBlocks[y1][x1].color = getRandomColor();
+            arrBlocks[y1][x1].color = colors[Math.floor(Math.random() * 15) + 1];
             canvasContext.fillStyle = arrBlocks[y1][x1].color;
             canvasContext.fillRect(arrBlocks[y1][x1].posX, arrBlocks[y1][x1].posY, arrBlocks[y1][x1].width, arrBlocks[y1][x1].height);
         }
@@ -89,14 +90,13 @@ function drawMainBlock() {
 }
 
 function updateMainBlock() {
-    MainBlock.color = arrBlocks[Math.floor(Math.random() * countBlocksY )+ 1][Math.floor(Math.random() * countBlocksX) + 1].color;
+    MainBlock.color = arrBlocks[Math.floor(Math.random() * (countBlocksY - 1)) + 1][Math.floor(Math.random() * (countBlocksX - 1)) + 1].color;
     canvasContext.fillStyle = MainBlock.color;
     canvasContext.fillRect(MainBlock.posX, MainBlock.posY, MainBlock.width, MainBlock.height);
 }
 
 function end() {
     screen = 'end';
-    document.getElementById('time').classList.remove('flashing');
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_game, -32, -32);
     canvasContext.drawImage(repeatButton, 320, 208);
@@ -135,6 +135,28 @@ function initEventsListeners() {
     window.addEventListener("mousedown", onCanvansMouseDown);
 }
 
+function rightAnswer() {
+    updateBlocks();
+    updateMainBlock();
+    points += 1;
+    document.getElementById('points').innerHTML = 'Очков: ' + points;
+    if (bestPoints < points) {
+        bestPoints = points;
+        document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
+    }
+    time = 99;
+    if (points <= 50) {time -= points;} else {time = 49};
+}
+
+function wrongAnswer() {
+    for (var n = 1; n < 10; n++) {
+        if (time > 0) {
+            time -= 1;
+            document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
+        }
+    }
+}
+
 function onCanvansMouseDown(event) {
     var pt = getCoords(event, canvas);
 
@@ -143,18 +165,9 @@ function onCanvansMouseDown(event) {
             for (var x1 = 1; x1 <= countBlocksX; x1++) {
                 if ((pt.x >= arrBlocks[y1][x1].posX) && (pt.y >= arrBlocks[y1][x1].posY) && (pt.x <= (arrBlocks[y1][x1].posX + arrBlocks[y1][x1].width)) && (pt.y <= (arrBlocks[y1][x1].posY + arrBlocks[y1][x1].height))) {
                     if (arrBlocks[y1][x1].color === MainBlock.color) {
-                        updateBlocks();
-                        updateMainBlock();
-                        points += 1;
-                        document.getElementById('points').innerHTML = 'Очков: ' + points;
-                        if (bestPoints < points) {
-                            bestPoints = points;
-                            document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
-                        }
-                        time = 99;
-                        if (points <= 50) {time -= points;} else {time = 49};
+                        rightAnswer();
                     } else {
-                        time -= 10;
+                        wrongAnswer();
                     }
                 }
             }
