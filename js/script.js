@@ -8,7 +8,7 @@ canvas.width = GAME.width;
 canvas.height = GAME.height;
 var canvasContext = canvas.getContext("2d");
 
-var screen = 'start';
+var screen;
 var time = 99;
 var points = 0;
 var bestPoints = 0;
@@ -117,7 +117,7 @@ function game() {
     drawMainBlock();
 }
 
-function start() {
+function startScreen() {
     screen = 'start';
     time = 99;
     points = 0;
@@ -137,16 +137,6 @@ function initEventsListeners() {
 
 function onCanvansMouseDown(event) {
     var pt = getCoords(event, canvas);
-    
-    if (screen === 'end') {
-        if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            game();
-        }
-        
-        if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
-            start();
-        }
-    }
 
     if (screen === 'game') {
         for (var y1 = 1; y1 <= countBlocksY; y1++) {
@@ -168,6 +158,16 @@ function onCanvansMouseDown(event) {
                     }
                 }
             }
+        }
+    }
+    
+    if (screen === 'end') {
+        if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
+            game();
+        }
+        
+        if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
+            startScreen();
         }
     }
 
@@ -197,14 +197,19 @@ function getCoords(e, canvas) {
     return { x: mx, y: my };
 }
 
-initEventsListeners();
 backButton.onload = () => {
-    start();
+    startScreen();
+    initEventsListeners();
+    setInterval(countDown, 100);
 }
-setInterval(countDown, 100);
 
 function setPoints(ptns) {
     points = ptns;
+    document.getElementById('points').innerHTML = 'Очков: ' + points;
+    if (bestPoints < points) {
+        bestPoints = points;
+        document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
+    }
 }
 
 function scrn() {

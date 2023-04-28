@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@font-face {
+    font-family: "Press Start 2P";
+    src: url("../fonts/PressStart2P-Regular.ttf");
+  }
 
 *
 {
@@ -10,7 +13,7 @@
 html
 {
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 .cursorGreen
@@ -26,19 +29,30 @@ html
 body
 {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: #222;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.points, .time, .bestPoints
+.points,
+.time,
+.bestPoints,
+.copyRight,
+.version,
+.help
 {
     font-family: 'Press Start 2P';
     color: #fff;
     position: absolute;
     font-size: 16px;
+    user-select: none;
+}
+
+.help:hover
+{
+    color: #ff8080;
 }
 
 .points
@@ -57,4 +71,22 @@ body
 {
     top: 64px;
     left: 32px;
+}
+
+.copyRight
+{
+    bottom: 32px;
+    left: 32px;
+}
+
+.version
+{
+    bottom: 64px;
+    left: 32px;
+}
+
+.help
+{
+    bottom: 32px;
+    right: 32px;
 }
