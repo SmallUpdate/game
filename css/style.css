@@ -50,11 +50,6 @@ body
     user-select: none;
 }
 
-.help:hover
-{
-    color: #ff8080;
-}
-
 .points
 {
     top: 32px;
@@ -89,4 +84,12 @@ body
 {
     bottom: 32px;
     right: 32px;
+    box-shadow: 0 2px 0 0 #fff;
+    cursor: pointer;
+}
+
+.help:hover
+{
+    color: #ff8080;
+    box-shadow: 0 2px 0 0 #ff8080;
 }
