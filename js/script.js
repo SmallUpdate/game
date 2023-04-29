@@ -8,12 +8,12 @@ canvas.width = GAME.width;
 canvas.height = GAME.height;
 var canvasContext = canvas.getContext("2d");
 
-var screen;
+var screen, gameMode;
 var time = 99;
 var points = 0;
 var bestPoints = 0;
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
-const version = '1.2';
+const version = '1.3';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -23,6 +23,12 @@ background_game.src = 'img/background_game.png';
 
 const playButton = new Image();
 playButton.src = 'img/playButton.png';
+
+const classicModeButton = new Image();
+classicModeButton.src = 'img/classicModeButton.png';
+
+const extremeModeButton = new Image();
+extremeModeButton.src = 'img/extremeModeButton.png';
 
 const stopButton = new Image();
 stopButton.src = 'img/stopButton.png';
@@ -126,25 +132,26 @@ function endScreen() {
 
 function stopScreen() {
     screen = 'stop';
-    /*drawBackground("#8000ff", "#400080");*/
     document.getElementById('canvas').classList.remove('cursorBlue');
     document.getElementById('canvas').classList.add('cursorGreen');
     document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
+    /*drawBackground("#8000ff", "#400080");*/
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_start, -32, -32);
     canvasContext.drawImage(continueButton, 320, 208);
 }
 
-function gameScreen(timeNew) {
+function gameScreen(timeNew, pointsNew) {
     screen = 'game';
     time = timeNew;
-    points = 0;
+    points = pointsNew;
     document.getElementById('points').innerHTML = 'Очков: ' + points;
     document.getElementById('time').style.color = '#fff';
     document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
     document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
     document.getElementById('canvas').classList.remove('cursorGreen');
     document.getElementById('canvas').classList.add('cursorBlue');
+    document.getElementById('gameMode').innerHTML = 'Игровой мод: ' + gameMode;
     document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
     /*drawBackground("#ff8000", "#804000");*/
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
@@ -154,10 +161,21 @@ function gameScreen(timeNew) {
     drawMainBlock();
 }
 
+function choosingModeScreen() {
+    screen = 'choosingMode';
+    document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
+    /*drawBackground("#8000ff", "#400080");*/
+    canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
+    canvasContext.drawImage(background_start, -32, -32);
+    canvasContext.drawImage(classicModeButton, 320, 144);
+    canvasContext.drawImage(extremeModeButton, 320, 272);
+}
+
 function startScreen() {
     screen = 'start';
     time = 99;
     points = 0;
+    gameMode = 'не выбрано';
     document.getElementById('points').innerHTML = 'Очков: ' + points;
     document.getElementById('time').style.color = '#fff';
     document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
@@ -165,6 +183,7 @@ function startScreen() {
     document.getElementById('canvas').classList.remove('cursorBlue');
     document.getElementById('canvas').classList.add('cursorGreen');
     document.getElementById('version').innerHTML = 'Версия: ' + version;
+    document.getElementById('gameMode').innerHTML = 'Игровой мод: ' + gameMode;
     document.getElementById('screen').innerHTML = 'Сцена игры: ' + screen;
     /*drawBackground("#8000ff", "#400080");*/
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
@@ -185,16 +204,27 @@ function rightAnswer() {
         bestPoints = points;
         document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
     }
-    time = 99;
-    if (points <= 50) {time -= points;} else {time = 49};
+    if (gameMode === 'classic') {
+        time = 99;
+        if (points <= 80) {time -= points;} else {time = 19};
+    }
+    if (gameMode === 'extreme') {
+        time = 19;
+    }
 }
 
 function wrongAnswer() {
-    for (var n = 1; n < 10; n++) {
-        if (time > 0) {
-            time -= 1;
-            document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
+    if (gameMode === 'classic') {
+        for (var n = 1; n < 10; n++) {
+            if (time > 0) {
+                time -= 1;
+                document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
+            }
         }
+    }
+    if (gameMode === 'extreme') {
+        time = 0;
+        document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
     }
 }
 
@@ -221,13 +251,13 @@ function onCanvansMouseDown(event) {
 
     if (screen === 'stop') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            gameScreen(time);
+            gameScreen(time, points);
         }
     }
     
     if (screen === 'end') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            gameScreen(99);
+            gameScreen(99, 0);
         }
         
         if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
@@ -235,9 +265,21 @@ function onCanvansMouseDown(event) {
         }
     }
 
+    if (screen === 'choosingMode') {
+        if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 144) && (pt.y <= 240)) {
+            gameMode = 'classic';
+            gameScreen(99, 0);
+        }
+        
+        if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 272) && (pt.y <= 368)) {
+            gameMode = 'extreme';
+            gameScreen(19, 0);
+        }
+    }
+
     if (screen === 'start') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            gameScreen(99);
+            choosingModeScreen();
         }
     }
 }
@@ -265,6 +307,9 @@ backButton_end.onload = () => {
     startScreen();
     initEventsListeners();
     setInterval(countDown, 100);
+    // var audio = new Audio();
+    // audio.src = 'sounds/sound.mp3';
+    // audio.autoplay = true;
 }
 
 document.getElementById('help').addEventListener('click', function () {

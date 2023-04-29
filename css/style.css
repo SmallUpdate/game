@@ -15,6 +15,15 @@ html
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    background-color: #222;
+}
+
+canvas
+{
+    position: absolute;
+    top: calc(50% - 256px);
+    left: calc(50% - 512px);
+    /* box-shadow: 0 0 0 8px #fff; */
 }
 
 .cursorGreen
@@ -29,12 +38,11 @@ html
 
 body
 {
-    width: 100%;
+    /*width: 100%;
     height: 100vh;
-    background-color: #222;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;*/
 }
 
 .points,
@@ -42,6 +50,7 @@ body
 .bestPoints,
 .copyRight,
 .version,
+.gameMode,
 .screen,
 .help,
 .helpText
@@ -83,6 +92,12 @@ body
     left: 32px;
 }
 
+.gameMode
+{
+    bottom: 96px;
+    right: 32px;
+}
+
 .screen
 {
     bottom: 64px;
@@ -105,6 +120,9 @@ body
 
 .helpText
 {
+    position: absolute;
+    top: 10%;
+    left: 10%;
     width: 80%;
     height: 80vh;
     padding: 32px;
@@ -114,6 +132,7 @@ body
     line-height: 32px;
     z-index: 99;
     overflow: scroll;
+    scrollbar-width: none;
 }
 
 .visible
@@ -125,3 +144,27 @@ span
 {
     color: rgb(255, 156, 156);
 }
+/* 
+.background {
+    background: linear-gradient(132deg, #FC415A, #591BC5, #212335);
+    background-size: 400% 400%;
+    animation: Gradient 15s ease infinite;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    padding:0;
+    margin:0px;
+}
+
+@keyframes Gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+} */
