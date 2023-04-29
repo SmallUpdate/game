@@ -8,12 +8,12 @@ canvas.width = GAME.width;
 canvas.height = GAME.height;
 var canvasContext = canvas.getContext("2d");
 
-var screen, gameMode;
+var screen, gameMode, MaxTime;
 var time = 99;
 var points = 0;
 var bestPoints = 0;
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
-const version = '1.4';
+const version = '1.5';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -145,6 +145,7 @@ function stopScreen() {
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_start, -32, -32);
     canvasContext.drawImage(continueButton, 320, 208);
+    canvasContext.drawImage(backButton_stop, 864, 352);
 }
 
 function gameScreen(timeNew, pointsNew) {
@@ -208,9 +209,11 @@ function rightAnswer() {
     updateMainBlock();
     points += 1;
     document.getElementById('points').innerHTML = 'Очков: ' + points;
-    if (bestPoints < points) {
-        bestPoints = points;
-        document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
+    if (gameMode != 'free') {
+        if (bestPoints < points) {
+            bestPoints = points;
+            document.getElementById('bestPoints').innerHTML = 'Ваш рекорд: ' + bestPoints;
+        }
     }
     if (gameMode === 'classic') {
         time = 99;
@@ -261,11 +264,14 @@ function onCanvansMouseDown(event) {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
             gameScreen(time, points);
         }
+        if ((pt.x >= 864) && (pt.x <= 960) && (pt.y >= 352) && (pt.y <= 448)) {
+            startScreen();
+        }
     }
     
     if (screen === 'end') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 208) && (pt.y <= 304)) {
-            gameScreen(99, 0);
+            gameScreen(MaxTime, 0);
         }
         
         if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
@@ -276,17 +282,20 @@ function onCanvansMouseDown(event) {
     if (screen === 'choosingMode') {
         if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 144) && (pt.y <= 240)) {
             gameMode = 'classic';
-            gameScreen(99, 0);
+            MaxTime = 99;
+            gameScreen(MaxTime, 0);
         }
         
         if ((pt.x >= 112) && (pt.x <= 496) && (pt.y >= 272) && (pt.y <= 368)) {
             gameMode = 'extreme';
-            gameScreen(19, 0);
+            MaxTime = 19;
+            gameScreen(MaxTime, 0);
         }
         
         if ((pt.x >= 528) && (pt.x <= 912) && (pt.y >= 272) && (pt.y <= 368)) {
             gameMode = 'free';
-            gameScreen(99, 0);
+            MaxTime = 99;
+            gameScreen(MaxTime, 0);
         }
         
         if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
@@ -302,7 +311,7 @@ function onCanvansMouseDown(event) {
 }
 
 function countDown() {
-    if (screen === 'game' && !gameMode === 'free') {
+    if (screen === 'game' && gameMode != 'free') {
         if (time > 0) {
             time -= 1;
             document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
