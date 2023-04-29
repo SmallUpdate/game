@@ -49,6 +49,7 @@ body
 .time,
 .bestPoints,
 .copyRight,
+.music,
 .version,
 .gameMode,
 .screen,
@@ -113,6 +114,20 @@ body
 }
 
 .help:hover
+{
+    color: #ff8080;
+    box-shadow: 0 2px 0 0 #ff8080;
+}
+
+.music
+{
+    bottom: 96px;
+    left: 32px;
+    box-shadow: 0 2px 0 0 #fff;
+    cursor: pointer;
+}
+
+.music:hover
 {
     color: #ff8080;
     box-shadow: 0 2px 0 0 #ff8080;

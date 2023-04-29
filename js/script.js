@@ -13,7 +13,7 @@ var time = 99;
 var points = 0;
 var bestPoints = 0;
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
-const version = '1.5';
+const version = '1.6';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -333,13 +333,17 @@ backButton_end.onload = () => {
     startScreen();
     initEventsListeners();
     setInterval(countDown, 100);
-    // var audio = new Audio();
-    // audio.src = 'sounds/sound.mp3';
-    // audio.autoplay = true;
 }
 
 document.getElementById('help').addEventListener('click', function () {
     document.getElementById('helpText').classList.toggle('visible');
+})
+
+var audio = new Audio();
+audio.src = 'sounds/sound.mp3';
+
+document.getElementById('music').addEventListener('click', function () {
+    audio.autoplay = true;
 })
 
 function setPoints(ptns) {
