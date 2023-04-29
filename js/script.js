@@ -11,9 +11,10 @@ var canvasContext = canvas.getContext("2d");
 var screen, gameMode, MaxTime;
 var time = 99;
 var points = 0;
-var bestPoints = 0;
+var bestPoints = localStorage.getItem('bestPoints');
+if (bestPoints === null) {bestPoints = 0};
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
-const version = '1.6';
+const version = '1.7';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -222,6 +223,8 @@ function rightAnswer() {
     if (gameMode === 'extreme') {
         time = 19;
     }
+
+    localStorage.setItem('bestPoints', bestPoints);
 }
 
 function wrongAnswer() {

@@ -46,14 +46,18 @@ body
 }
 
 .points,
-.time,
 .bestPoints,
+
+.time,
+
 .copyRight,
-.music,
 .version,
+.music,
+
 .gameMode,
 .screen,
 .help,
+
 .helpText
 {
     font-family: 'Press Start 2P';
@@ -69,16 +73,16 @@ body
     left: 32px;
 }
 
-.time
-{
-    top: 32px;
-    right: 32px;
-}
-
 .bestPoints
 {
     top: 64px;
     left: 32px;
+}
+
+.time
+{
+    top: 32px;
+    right: 32px;
 }
 
 .copyRight
@@ -91,32 +95,6 @@ body
 {
     bottom: 64px;
     left: 32px;
-}
-
-.gameMode
-{
-    bottom: 96px;
-    right: 32px;
-}
-
-.screen
-{
-    bottom: 64px;
-    right: 32px;
-}
-
-.help
-{
-    bottom: 32px;
-    right: 32px;
-    box-shadow: 0 2px 0 0 #fff;
-    cursor: pointer;
-}
-
-.help:hover
-{
-    color: #ff8080;
-    box-shadow: 0 2px 0 0 #ff8080;
 }
 
 .music
@@ -133,9 +111,34 @@ body
     box-shadow: 0 2px 0 0 #ff8080;
 }
 
+.gameMode
+{
+    bottom: 32px;
+    right: 32px;
+}
+
+.screen
+{
+    bottom: 64px;
+    right: 32px;
+}
+
+.help
+{
+    bottom: 96px;
+    right: 32px;
+    box-shadow: 0 2px 0 0 #fff;
+    cursor: pointer;
+}
+
+.help:hover
+{
+    color: #ff8080;
+    box-shadow: 0 2px 0 0 #ff8080;
+}
+
 .helpText
 {
-    position: absolute;
     top: 10%;
     left: 10%;
     width: 80%;

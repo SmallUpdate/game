@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find the same objects</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,10 +12,13 @@
     <canvas id="canvas"></canvas>
     <div class="points" id="points">Очков: 'points'</div>
     <div class="bestPoints" id="bestPoints">Ваш рекорд: 'bestPoints'</div>
+
     <div class="time" id="time">Времени осталось: 'time' сек</div>
+
     <div class="copyRight">© Песняков Игорь, 2023</div>
-    <div class="music" id="music">Музыка</div>
     <div class="version" id="version">Версия: 'version'</div>
+    <div class="music" id="music">Музыка</div>
+
     <div class="gameMode" id="gameMode">Игровой мод 'gameMode'</div>
     <div class="screen" id="screen">Сцена игры: 'screen'</div>
     <div class="help" id="help">Помощь</div>
@@ -35,7 +38,8 @@
         - Кнопа <span>"Вернуться"</span> находится в левом верхнем углу, она перенесёт вас на <span>стартовый экран</span>;
         <br>
         - Кнопа <span>"Повторить"</span> находится в центре игрового экрана, она перенесёт вас на <span>игровой экран</span>.
-        <br><br>
+        <br>
+        <br>
         <span>Режим Классика</span>:
         <br>
         - Время на нахождение картинки <span>ограничено</span>;
@@ -45,7 +49,8 @@
         - Если вы выбрали правильный квадратик, время вернется к исходному состоянию (+ учёт очков и расчёт макс. времени);
         <br>
         - При выборе неправильного квадратика, <span>время уменьшится на 1 секунду</span>;
-        <br><br>
+        <br>
+        <br>
         <span>Режим Экстрим</span>:
         <br>
         - Время на нахождение картинки <span>2 сек</span>;
@@ -55,12 +60,31 @@
         - Если вы выбрали правильный квадратик, время вернется к 2 сек;
         <br>
         - При выборе неправильного квадратика, <span>вы проиграете</span>;
-        <br><br>
+        <br>
+        <br>
         <span>Режим Свободный</span>:
         <br>
         - Время на нахождение картинки <span>не ограничено</span>;
         <br>
         - <span>Рекорд не засчитывается!</span>;
+        <br><br>
+        <span>Журнал обновлений</span>:
+        <br>
+        -<span> 1.0</span>: Релиз игры;
+        <br>
+        -<span> 1.1</span>: Исправлен баг с переходом от стартовой сцены к игровой, добавлен лучший результат;
+        <br>
+        -<span> 1.2</span>: Добавлена сцена паузы, изменены дизайны кнопок и фонов;
+        <br>
+        -<span> 1.3</span>: Исправлен баг с уменьшением времени, удалена анимация мигания цвета;
+        <br>
+        -<span> 1.4</span>: Добавлен новый игровой режим "Экстрим" и сама сцена выбора режимов;
+        <br>
+        -<span> 1.5</span>: Добавлен новый игровой режим "Свободный" и возможность выхода во время паузы;
+        <br>
+        -<span> 1.6</span>: Исправлены мелкие ошибки и баги связанные с получением очков и переходом из одной сцены в другую;
+        <br>
+        -<span> 1.7</span>: Добавлено автоматическое сохранение лучшего результата (после перезагрузки сайта рекорд не сбрасывается);
     </div>
     <!-- <audio src="sounds/sound.mp3" autoplay="autoplay"></audio> -->
     <script src="js/script.js" type="application/javascript"></script>
