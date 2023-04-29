@@ -13,7 +13,7 @@ var time = 99;
 var points = 0;
 var bestPoints = 0;
 var colors = ['Black', 'Gray', 'Silver', 'White', 'Fuchsia', 'Purple', 'Red', 'Maroon', 'Yellow', 'Olive', 'Lime', 'Green', 'Aqua', 'Teal', 'Blue', 'Navy'];
-const version = '1.3';
+const version = '1.4';
 
 const background_start = new Image();
 background_start.src = 'img/background_start.png';
@@ -30,6 +30,9 @@ classicModeButton.src = 'img/classicModeButton.png';
 const extremeModeButton = new Image();
 extremeModeButton.src = 'img/extremeModeButton.png';
 
+const freeModeButton = new Image();
+freeModeButton.src = 'img/freeModeButton.png';
+
 const stopButton = new Image();
 stopButton.src = 'img/stopButton.png';
 
@@ -38,6 +41,9 @@ repeatButton.src = 'img/repeatButton.png';
 
 const continueButton = new Image();
 continueButton.src = 'img/continueButton.png';
+
+const backButton_stop = new Image();
+backButton_stop.src = 'img/backButton_stop.png';
 
 const backButton_end = new Image();
 backButton_end.src = 'img/backButton_end.png';
@@ -167,8 +173,10 @@ function choosingModeScreen() {
     /*drawBackground("#8000ff", "#400080");*/
     canvasContext.clearRect(0, 0, GAME.width,  GAME.height);
     canvasContext.drawImage(background_start, -32, -32);
+    canvasContext.drawImage(backButton_stop, 64, 64);
     canvasContext.drawImage(classicModeButton, 320, 144);
-    canvasContext.drawImage(extremeModeButton, 320, 272);
+    canvasContext.drawImage(extremeModeButton, 112, 272);
+    canvasContext.drawImage(freeModeButton, 528, 272);
 }
 
 function startScreen() {
@@ -271,9 +279,18 @@ function onCanvansMouseDown(event) {
             gameScreen(99, 0);
         }
         
-        if ((pt.x >= 320) && (pt.x <= 704) && (pt.y >= 272) && (pt.y <= 368)) {
+        if ((pt.x >= 112) && (pt.x <= 496) && (pt.y >= 272) && (pt.y <= 368)) {
             gameMode = 'extreme';
             gameScreen(19, 0);
+        }
+        
+        if ((pt.x >= 528) && (pt.x <= 912) && (pt.y >= 272) && (pt.y <= 368)) {
+            gameMode = 'free';
+            gameScreen(99, 0);
+        }
+        
+        if ((pt.x >= 64) && (pt.x <= 160) && (pt.y >= 64) && (pt.y <= 160)) {
+            startScreen();
         }
     }
 
@@ -285,7 +302,7 @@ function onCanvansMouseDown(event) {
 }
 
 function countDown() {
-    if (screen === 'game') {
+    if (screen === 'game' && !gameMode === 'free') {
         if (time > 0) {
             time -= 1;
             document.getElementById('time').innerHTML = 'Времени осталось: ' + Math.floor(time / 10) + '.' + time % 10 + ' сек';
